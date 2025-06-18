@@ -7,7 +7,6 @@ param environmentName string
 
 @minLength(1)
 @description('Primary location for all resources')
-@allowed(['australiaeast', 'eastasia', 'eastus', 'eastus2', 'northeurope', 'southcentralus', 'southeastasia', 'swedencentral', 'uksouth', 'westus2', 'eastus2euap'])
 @metadata({
   azd: {
     type: 'location'
@@ -16,6 +15,7 @@ param environmentName string
 param location string
 
 @allowed([
+  'Y1'
   'EP1'
   'EP2'
   'EP3'
@@ -36,9 +36,10 @@ param location string
   'B2'
   'B3'
 ])
-param functionSkuName string = 'EP1' // Uses main.parameters.json first
+param functionSkuName string = 'Y1' // Changed to consumption plan
 
 @allowed([
+  'Dynamic'
   'ElasticPremium'
   'PremiumV3'
   'Premium0V3'
@@ -46,7 +47,7 @@ param functionSkuName string = 'EP1' // Uses main.parameters.json first
   'Basic'
 ])
 
-param functionSkuTier string = 'ElasticPremium' // Uses main.parameters.json first
+param functionSkuTier string = 'Dynamic' // Changed to Dynamic for consumption plan
 param functionReservedPlan bool = true // Set to false to get a Windows OS plan
 
 
@@ -65,9 +66,9 @@ param disableLocalAuth bool = true
 
 param openAiServiceName string = ''
  
-param openAiSkuName string
+param openAiSkuName string = ''
 @allowed([ 'azure', 'openai', 'azure_custom' ])
-param openAiHost string // Set in main.parameters.json
+param openAiHost string = 'openai' // Set default to openai
 
 @description('Public network access value for all deployed resources')
 @allowed(['Enabled', 'Disabled'])
@@ -141,12 +142,12 @@ module durableFunction './app/durable-function.bicep' = {
     storageAccountName: storage.outputs.name
     identityId: durableFunctionUserAssignedIdentity.outputs.identityId
     identityClientId: durableFunctionUserAssignedIdentity.outputs.identityClientId
-    azureOpenaiChatgptDeployment: chatGptDeploymentName
-    azureOpenaiService: openAi.outputs.name
+    azureOpenaiChatgptDeployment: '' // Set to empty string
+    azureOpenaiService: '' // Set to empty string
     documentIntelligenceEndpoint: documentIntelligence.outputs.endpoint
     appSettings: {
     }
-    virtualNetworkSubnetId: serviceVirtualNetwork.outputs.appSubnetID
+    //virtualNetworkSubnetId: serviceVirtualNetwork.outputs.appSubnetID
   }
 }
 
@@ -249,46 +250,47 @@ module appInsightsRoleAssignmentApi './core/monitor/appinsights-access.bicep' = 
   }
 }
 
-module openAi './core/ai/cognitiveservices.bicep' = {
-  name: 'openai'
-  scope: rg
-  params: {
-    name: !empty(openAiServiceName) ? openAiServiceName : '${abbrs.cognitiveServicesAccounts}${resourceToken}'
-    location: 'eastus2'
-    
-    tags: tags
-    publicNetworkAccess: 'Enabled'
-    sku: {
-      name: openAiSkuName
-    }
-    deployments: [
-      {
-        name: chatGpt.deploymentName
-        capacity: chatGpt.deploymentCapacity
-        model: {
-          format: 'OpenAI'
-          name: chatGpt.modelName
-          version: chatGpt.deploymentVersion
-        }
-        scaleSettings: {
-          scaleType: 'Standard'
-        }
-      }
-    ]
-  }
-}
+// COMMENTED OUT: Azure OpenAI module - not needed as we're using OpenAI API
+// module openAi './core/ai/cognitiveservices.bicep' = {
+//   name: 'openai'
+//   scope: rg
+//   params: {
+//     name: !empty(openAiServiceName) ? openAiServiceName : '${abbrs.cognitiveServicesAccounts}${resourceToken}'
+//     location: 'canadacentral'
+//     
+//     tags: tags
+//     publicNetworkAccess: 'Enabled'
+//     sku: {
+//       name: openAiSkuName
+//     }
+//     deployments: [
+//       {
+//         name: chatGpt.deploymentName
+//         capacity: chatGpt.deploymentCapacity
+//         model: {
+//           format: 'OpenAI'
+//           name: chatGpt.modelName
+//           version: chatGpt.deploymentVersion
+//         }
+//         scaleSettings: {
+//           scaleType: 'Standard'
+//         }
+//       }
+//     ]
+//   }
+// }
 
-// Learn more about Azure role-based access control (RBAC) and built-in-roles at https://docs.microsoft.com/en-us/azure/role-based-access-control/overview
-var CognitiveServicesRoleDefinitionIds = ['5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'] // Cognitive Services OpenAI User
-module openAiRoleUser 'app/openai-Access.bicep' = {
-  scope: rg
-  name: 'openai-roles'
-  params: {
-    principalId: durableFunctionUserAssignedIdentity.outputs.identityPrincipalId
-    openAiAccountResourceName: openAi.outputs.name
-    roleDefinitionIds: CognitiveServicesRoleDefinitionIds
-  }
-}
+// COMMENTED OUT: OpenAI role assignment - not needed
+// var CognitiveServicesRoleDefinitionIds = ['5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'] // Cognitive Services OpenAI User
+// module openAiRoleUser 'app/openai-Access.bicep' = {
+//   scope: rg
+//   name: 'openai-roles'
+//   params: {
+//     principalId: durableFunctionUserAssignedIdentity.outputs.identityPrincipalId
+//     openAiAccountResourceName: openAi.outputs.name
+//     roleDefinitionIds: CognitiveServicesRoleDefinitionIds
+//   }
+// }
 
 module documentIntelligence 'br/public:avm/res/cognitive-services/account:0.5.4' = {
   name: 'documentintelligence'

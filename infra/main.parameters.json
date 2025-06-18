@@ -12,70 +12,70 @@
       "value": "${AZURE_PRINCIPAL_ID}"
     },
     "openAiSkuName": {
-      "value": "S0"
+      "value": ""
     },
     "openAiServiceName": {
-      "value": "${AZURE_OPENAI_SERVICE}"
+      "value": ""
     },
     "openAiHost": {
-      "value": "${OPENAI_HOST=azure}"
+      "value": "openai"
     },
     "openAiResourceGroupName": {
-      "value": "${AZURE_OPENAI_RESOURCE_GROUP}"
+      "value": ""
     },
     "chatGptDeploymentName": {
-      "value": "${AZURE_OPENAI_CHATGPT_DEPLOYMENT=chat}"
+      "value": ""
     },
     "chatGptDeploymentCapacity":{
-      "value": "${AZURE_OPENAI_CHATGPT_DEPLOYMENT_CAPACITY}"
+      "value": ""
     },
     "chatGptDeploymentVersion":{
-      "value": "${AZURE_OPENAI_CHATGPT_DEPLOYMENT_VERSION}"
+      "value": ""
     },
     "chatGptModelName":{
-      "value": "${AZURE_OPENAI_CHATGPT_MODEL=gpt-35-turbo}"
+      "value": ""
     },
     "documentIntelligenceServiceName": {
-      "value": "${AZURE_DOCUMENTINTELLIGENCE_SERVICE}"
+      "value": ""
     },
     "documentIntelligenceSkuName": {
-      "value": "${AZURE_DOCUMENTINTELLIGENCE_SKU=S0}"
+      "value": "S0"
     }, 
     "embeddingDeploymentName": {
-      "value": "${AZURE_OPENAI_EMB_DEPLOYMENT=embedding}"
+      "value": ""
     },
     "embeddingModelName":{
-      "value": "${AZURE_OPENAI_EMB_MODEL_NAME=text-embedding-3-small}"
+      "value": ""
     },
     "embeddingDeploymentVersion":{
-      "value": "${AZURE_OPENAI_EMB_DEPLOYMENT_VERSION}"
+      "value": ""
     },
     "embeddingDeploymentCapacity":{
-      "value": "${AZURE_OPENAI_EMB_DEPLOYMENT_CAPACITY}"
+      "value": ""
     },
     "searchServiceName": {
-      "value": "${AZURE_SEARCH_SERVICE}"
+      "value": ""
     },
     "searchServiceResourceGroupName": {
-      "value": "${AZURE_SEARCH_SERVICE_RESOURCE_GROUP}"
+      "value": ""
     },
     "searchServiceIndexName": {
-      "value": "${AZURE_SEARCH_INDEX=openai-index}"
+      "value": ""
     },
     "searchServiceSkuName": {
-      "value": "${AZURE_SEARCH_SERVICE_SKU=standard}"
+      "value": ""
     },
     "storageAccountName": {
-      "value": "${AZURE_STORAGE_ACCOUNT}"
+      "value": ""
     },
     "storageResourceGroupName": {
-      "value": "${AZURE_STORAGE_RESOURCE_GROUP}"
+      "value": ""
     },
-    "azFunctionHostingPlanType": {
-      "value": "flexconsumption"
+    "functionSkuName": {
+      "value": "Y1"
     },
-    "systemPrompt": {
-      "value": "${SYSTEM_PROMPT}=You are a helpful assistant. You are responding to requests from a user about internal emails and documents. You can and should refer to the internal documents to help respond to requests. If a user makes a request thats not covered by the documents provided in the query, you must say that you do not have access to the information and not try and get information from other places besides the documents provided. The following is a list of documents that you can refer to when answering questions. The documents are in the format [filename]: [text] and are separated by newlines. If you answer a question by referencing any of the documents, please cite the document in your answer. For example, if you answer a question by referencing info.txt, you should add \"Reference: info.txt\" to the end of your answer on a separate line."
+    "functionSkuTier": {
+      "value": "Dynamic"
     }
   }
 }
