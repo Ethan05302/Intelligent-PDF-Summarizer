@@ -1,7 +1,7 @@
 
 # Intelligent PDF Summarizer
 
-This project is an Azure Durable Functions-based application that summarizes PDF documents using OpenAI's GPT language model. The system extracts text content from uploaded PDFs and returns concise summaries through an orchestrated function flow.
+This project is an Azure Durable Functions-based application that summarizes PDF documents using OpenAI's GPT language model. The system extracts text content from uploaded PDFs and returns summaries through an  function flow.
 
 ## Features
 
@@ -13,7 +13,7 @@ This project is an Azure Durable Functions-based application that summarizes PDF
 
 ## Why Not Using Azure OpenAI?
 
-This project originally aimed to use Azure OpenAI Service. However, due to subscription and regional restrictions, it was not accessible. Therefore, the solution uses the official OpenAI API (https://platform.openai.com) with a personal API key. Functionality remains the same.
+This project originally aimed to use Azure OpenAI Service. However, due to subscription or for some other reasons, maybe regional restrictions, it was not accessible. Therefore, I use the official OpenAI API (https://platform.openai.com) with a personal API key. Functionality remains the same.
 
 ## Technologies Used
 
@@ -46,8 +46,6 @@ Intelligent-PDF-Summarizer/
 ```
 
 ## Configuration (local.settings.json)
-
-Do **not** commit secrets. Instead, use the following template and set your keys locally:
 
 ```json
 {
